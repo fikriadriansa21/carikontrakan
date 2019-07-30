@@ -27,6 +27,7 @@ public class MenuPengontrakInternalFrame extends javax.swing.JInternalFrame {
     TableModel modelTable = new TableModel();
     private String[][] rs;
     Pengontrak pengontrak = new Pengontrak();
+    PengontrakDAO pDao = new PengontrakDAO();
     DefaultTableModel model;
     
     private ConnectionDB db;
@@ -36,7 +37,7 @@ public class MenuPengontrakInternalFrame extends javax.swing.JInternalFrame {
     
     private void refreshTable(){
         Pengontrak pengontrak = new Pengontrak();
-        rs = pengontrak.tampilData();
+        rs = pDao.tampilData();
         modelTable.setTabel(tablePengontrak, rs, namaKolom, jumlahKolom);
     } 
     
@@ -55,6 +56,12 @@ public class MenuPengontrakInternalFrame extends javax.swing.JInternalFrame {
         refreshTable();        
     }
 
+    private void setValuePengontrak(){
+        pengontrak.setIdPengontrak(tfIdPengontrak.getText());
+        pengontrak.setNamaPengontrak(tfNamaPengontrak.getText());
+        pengontrak.setNik(tfNik.getText());
+        pengontrak.setNoHp(tfNoHp.getText());
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -81,6 +88,8 @@ public class MenuPengontrakInternalFrame extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         btnCari = new javax.swing.JButton();
         tfNik = new javax.swing.JTextField();
+        btnHapus = new javax.swing.JButton();
+        btnRefresh = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -159,16 +168,28 @@ public class MenuPengontrakInternalFrame extends javax.swing.JInternalFrame {
             }
         });
 
+        btnHapus.setBackground(new java.awt.Color(255, 255, 255));
+        btnHapus.setText("Hapus");
+        btnHapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHapusActionPerformed(evt);
+            }
+        });
+
+        btnRefresh.setText("R");
+        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(57, 57, 57)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -191,24 +212,38 @@ public class MenuPengontrakInternalFrame extends javax.swing.JInternalFrame {
                                     .addComponent(tfNik)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(16, 16, 16)
-                                .addComponent(btnUbah, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                                .addComponent(btnUbah, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 590, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(42, 42, 42))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel4)
-                                .addGap(32, 32, 32)
+                                .addGap(18, 18, 18)
                                 .addComponent(tfCariNama, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnCari))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 590, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(74, 74, 74))))
+                            .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(48, 48, 48)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(48, 48, 48)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnRefresh)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tfCariNama, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
@@ -234,7 +269,8 @@ public class MenuPengontrakInternalFrame extends javax.swing.JInternalFrame {
                         .addGap(40, 40, 40)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnSimpan, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnUbah, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btnUbah, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(63, 63, 63))
         );
@@ -243,13 +279,13 @@ public class MenuPengontrakInternalFrame extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
-        // TODO add your handling code here:
-        Pengontrak pengontrak = new Pengontrak();
-        pengontrak.tambahData(
-            tfIdPengontrak.getText(),           
-            tfNik.getText(),
-            tfNamaPengontrak.getText(),
-            tfNoHp.getText()
+        // TODO add your handling code here: 
+        setValuePengontrak();
+        pDao.tambahData(
+            pengontrak.getIdPengontrak(),
+            pengontrak.getNik(),
+            pengontrak.getNamaPengontrak(),            
+            pengontrak.getNoHp()
         );
 
         refreshTable();
@@ -258,13 +294,12 @@ public class MenuPengontrakInternalFrame extends javax.swing.JInternalFrame {
 
     private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed
         // TODO add your handling code here:
-        Pengontrak pengontrak = new Pengontrak();
-
-        pengontrak.ubahData(
-            String.valueOf(tfNik.getText()),
-            tfNamaPengontrak.getText(),
-            tfNoHp.getText(),
-            tfIdPengontrak.getText()
+        setValuePengontrak();
+        pDao.ubahData(
+            pengontrak.getNik(),
+            pengontrak.getNamaPengontrak(),            
+            pengontrak.getNoHp(),
+            pengontrak.getIdPengontrak()
         );
         refreshTable();
         refreshForm();
@@ -282,16 +317,29 @@ public class MenuPengontrakInternalFrame extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tablePengontrakMouseClicked
 
     private void btnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariActionPerformed
-        // TODO add your handling code here:
-        Pengontrak pengontrak = new Pengontrak();
+        // TODO add your handling code here:        
         model = (DefaultTableModel) tablePengontrak.getModel();
-        rs = pengontrak.cariNamaPengontrak(tfCariNama.getText());
+        rs = pDao.cariNamaPengontrak(tfCariNama.getText());
         modelTable.setTabel(tablePengontrak, rs, namaKolom, jumlahKolom);
     }//GEN-LAST:event_btnCariActionPerformed
+
+    private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
+        // TODO add your handling code here:
+        pDao.hapusData(tfIdPengontrak.getText());
+    }//GEN-LAST:event_btnHapusActionPerformed
+
+    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
+        // TODO add your handling code here:
+        refreshTable();
+        refreshForm();
+        tfIdPengontrak.setEditable(true);
+    }//GEN-LAST:event_btnRefreshActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCari;
+    private javax.swing.JButton btnHapus;
+    private javax.swing.JButton btnRefresh;
     private javax.swing.JButton btnSimpan;
     private javax.swing.JButton btnUbah;
     private javax.swing.JLabel jLabel1;

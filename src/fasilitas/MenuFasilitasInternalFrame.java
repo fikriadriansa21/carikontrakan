@@ -34,10 +34,10 @@ public class MenuFasilitasInternalFrame extends javax.swing.JInternalFrame {
     private Statement stmt;
     private String query;
     private ResultSet resultSet;
+    private FasilitasDAO fDao = new FasilitasDAO();
     
-    private void refreshTable(){
-        Fasilitas fasilitas = new Fasilitas();
-        rs = fasilitas.tampilData();
+    private void refreshTable(){        
+        rs = fDao.tampilData();
         modelTable.setTabel(tableFasilitas, rs, namaKolom, jumlahKolom);
     } 
     
@@ -78,7 +78,12 @@ public class MenuFasilitasInternalFrame extends javax.swing.JInternalFrame {
         tampilComboKontrakan();
     }
 
-    
+    private void setValueFasilitas(){
+        fasilitas.setIdFasilitas(tfIdFasilitas.getText());
+        fasilitas.setNoKontrakan(String.valueOf(comboNoKontrakan.getSelectedItem()));
+        fasilitas.setNamaFasilitas(tfNamaFasilitas.getText());
+        fasilitas.setJumlah(new Integer(tfJumlah.getText()));
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -105,6 +110,7 @@ public class MenuFasilitasInternalFrame extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         btnCari = new javax.swing.JButton();
         btnHapus = new javax.swing.JButton();
+        btnRefresh = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -194,16 +200,20 @@ public class MenuFasilitasInternalFrame extends javax.swing.JInternalFrame {
             }
         });
 
+        btnRefresh.setText("R");
+        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(57, 57, 57)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -228,24 +238,32 @@ public class MenuFasilitasInternalFrame extends javax.swing.JInternalFrame {
                                 .addGap(4, 4, 4)
                                 .addComponent(btnUbah, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(32, 32, 32)
-                                .addComponent(tfCariFasilitas, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnCari))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 590, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(74, 74, 74))))
+                                .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(32, 32, 32)
+                        .addComponent(tfCariFasilitas, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCari))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 590, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(74, 74, 74))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(48, 48, 48)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(48, 48, 48)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnRefresh)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tfCariFasilitas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
@@ -281,12 +299,13 @@ public class MenuFasilitasInternalFrame extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
-        // TODO add your handling code here:        
-        fasilitas.tambahData(
-            tfIdFasilitas.getText(),           
-            String.valueOf(comboNoKontrakan.getSelectedItem()),
-            tfNamaFasilitas.getText(),
-            Integer.valueOf(tfJumlah.getText())
+        // TODO add your handling code here: 
+        setValueFasilitas();
+        fDao.tambahData(
+            fasilitas.getIdFasilitas(),           
+            fasilitas.getNoKontrakan(),
+            fasilitas.getNamaFasilitas(),
+            fasilitas.getJumlah()
         );
 
         refreshTable();
@@ -294,12 +313,13 @@ public class MenuFasilitasInternalFrame extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnSimpanActionPerformed
 
     private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed
-        // TODO add your handling code here:        
-        fasilitas.ubahData(
-            String.valueOf(comboNoKontrakan.getSelectedItem()),
-            tfNamaFasilitas.getText(),
-            new Integer(tfJumlah.getText()),
-            tfIdFasilitas.getText()
+        // TODO add your handling code here: 
+        setValueFasilitas();
+        fDao.ubahData(                       
+            fasilitas.getNoKontrakan(),
+            fasilitas.getNamaFasilitas(),
+            fasilitas.getJumlah(),
+            fasilitas.getIdFasilitas()
         );
         refreshTable();
         refreshForm();
@@ -319,18 +339,27 @@ public class MenuFasilitasInternalFrame extends javax.swing.JInternalFrame {
     private void btnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariActionPerformed
         // TODO add your handling code here:        
         model = (DefaultTableModel) tableFasilitas.getModel();
-        rs = fasilitas.cariNamaFasilitas(tfCariFasilitas.getText());
+        rs = fDao.cariNamaFasilitas(tfCariFasilitas.getText());
         modelTable.setTabel(tableFasilitas, rs, namaKolom, jumlahKolom);
     }//GEN-LAST:event_btnCariActionPerformed
 
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here:        
+        fDao.hapusData(fasilitas.getIdFasilitas());
     }//GEN-LAST:event_btnHapusActionPerformed
+
+    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
+        // TODO add your handling code here:
+        refreshTable();
+        refreshForm();
+        tfIdFasilitas.setEditable(true);
+    }//GEN-LAST:event_btnRefreshActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCari;
     private javax.swing.JButton btnHapus;
+    private javax.swing.JButton btnRefresh;
     private javax.swing.JButton btnSimpan;
     private javax.swing.JButton btnUbah;
     private javax.swing.JComboBox<String> comboNoKontrakan;

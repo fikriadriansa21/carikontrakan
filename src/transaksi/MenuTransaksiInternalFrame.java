@@ -2,8 +2,11 @@ package transaksi;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
-import javax.swing.JDesktopPane;
-import javax.swing.JOptionPane;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import model.*;
 
@@ -27,22 +30,23 @@ public class MenuTransaksiInternalFrame extends javax.swing.JInternalFrame {
     private ResultSet resultSet;
     
     String[] namaKolom = {
+        "Id Transaksi",
+        "Tanggal",
         "No Kontrakan",
-        "Biaya",
-        "Luas",
-        "Status"
+        "Id Pengontrak"
     };
     
     int jumlahKolom = namaKolom.length;
     TableModel modelTable = new TableModel();
     private String[][] rs;
     Transaksi transaksi = new Transaksi();
+    TransaksiDAO tDao = new TransaksiDAO();
     DefaultTableModel model;
     
     
     private void refreshTable(){
         Transaksi transaksi = new Transaksi();
-        rs = transaksi.tampilData();
+        rs = tDao.tampilData();
         modelTable.setTabel(tableTransaksi, rs, namaKolom, jumlahKolom);
     }    
     
@@ -105,44 +109,17 @@ public class MenuTransaksiInternalFrame extends javax.swing.JInternalFrame {
                 System.out.println(e.getMessage());
             }
     }
-//    public String[][] tampilDataCari(){
-//        rs = null;
-//        String[][] data = null;
-//        db = new ConnectionDB();
-//        db.dbConnect();
-//        int jumlahBaris = 0;
-//        
-//        try {
-//            stmt = db.conection.createStatement();
-//            query = "SELECT COUNT(no_kontrakan) as jumlah FROM kontrakan;";
-//            resultSet = stmt.executeQuery(query);
-//            if (resultSet.next()) {
-//                jumlahBaris = resultSet.getInt("jumlah");
-//                        
-//            }
-//            query = "SELECT * FROM kontrakan WHERE status = '"+comboStatus.getSelectedItem()+"';";
-//            resultSet = stmt.executeQuery(query);
-//            data = new String[jumlahBaris][4];
-//            int r = 0;
-//            
-//            while (resultSet.next()) {                
-//                data[r][0] = resultSet.getString("no_kontrakan");
-//                data[r][1] = resultSet.getString("harga_kontrakan");
-//                data[r][2] = resultSet.getString("luas_kontrakan");
-//                data[r][3] = resultSet.getString("status");
-//                r++;
-//            }
-//            stmt.close();
-//            db.conection.close();
-//        } catch (Exception e) {
-//            JOptionPane.showMessageDialog(null, e.getMessage());
-//        }
-//        return data;
-//    }
-//    private void tampilCari(){        
-//        rs = tampilDataCari();
-//        modelTable.setTabel(tableTransaksi, rs, namaKolom, jumlahKolom);
-//    }
+    
+    private void setValueTransaksi(){
+        Date date = tanggalTransakiChooser.getDate();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String strDate = dateFormat.format(date);
+        
+        transaksi.setIdTransaksi(tfIdTransaksi.getText());
+        transaksi.setTglTransaksi(strDate);
+        transaksi.setNoKontrakan(String.valueOf(comboNoKontrakan.getSelectedItem()));
+        transaksi.setIdPengontrak(String.valueOf(comboIdPengontrak.getSelectedItem()));
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -217,7 +194,7 @@ public class MenuTransaksiInternalFrame extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Id Transaksi", "Tanggal", "No Kontrakan", "Nama Pengontrak"
+                "Id Transaksi", "Tanggal", "No Kontrakan", "Id Pengontrak"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -245,6 +222,11 @@ public class MenuTransaksiInternalFrame extends javax.swing.JInternalFrame {
 
         btnHapus.setBackground(new java.awt.Color(255, 255, 255));
         btnHapus.setText("Hapus");
+        btnHapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHapusActionPerformed(evt);
+            }
+        });
 
         tanggalTransakiChooser.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -288,14 +270,14 @@ public class MenuTransaksiInternalFrame extends javax.swing.JInternalFrame {
                         .addGap(30, 30, 30)
                         .addComponent(btnHapus)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel8)
-                        .addGap(29, 29, 29)
-                        .addComponent(comboCariTanggal, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(28, 28, 28)
+                        .addComponent(comboCariTanggal, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(btnCari)
-                        .addGap(71, 71, 71))
+                        .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 571, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(44, 44, 44))))
@@ -330,10 +312,11 @@ public class MenuTransaksiInternalFrame extends javax.swing.JInternalFrame {
                             .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(323, 323, 323))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnCari)
-                            .addComponent(jLabel8)
-                            .addComponent(comboCariTanggal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(comboCariTanggal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel8))
+                            .addComponent(btnCari))
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(311, 311, 311))))
@@ -357,19 +340,24 @@ public class MenuTransaksiInternalFrame extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariActionPerformed
-        // TODO add your handling code here:
-                
+        // TODO add your handling code here:                
+        model = (DefaultTableModel) tableTransaksi.getModel();
+        Date date = comboCariTanggal.getDate();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String strDate = dateFormat.format(date);
         
+        rs = tDao.cariTanggal(strDate);
+        modelTable.setTabel(tableTransaksi, rs, namaKolom, jumlahKolom);
     }//GEN-LAST:event_btnCariActionPerformed
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
         // TODO add your handling code here:   
-//        Kontrakan kontrakan = new Kontrakan();
-//            kontrakan.tambahData(
-//                    tfIdTransaksi.getText(),
-//                    new Double(tfBiayaKontrakan.getText()),
-//                    new Double(tfLuasKontrakan.getText()),
-//                    tfStatusKontrakan.getText());
+        setValueTransaksi();
+        tDao.tambahData(
+                transaksi.getIdTransaksi(),
+                transaksi.getTglTransaksi(),
+                transaksi.getNoKontrakan(),
+                transaksi.getIdPengontrak());
 
         refreshTable();
         refreshForm();
@@ -377,29 +365,40 @@ public class MenuTransaksiInternalFrame extends javax.swing.JInternalFrame {
 
     private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed
         // TODO add your handling code here:
-//        Kontrakan kontrakan = new Kontrakan(); 
-//        
-//            kontrakan.ubahData(
-//                    new Double(tfBiayaKontrakan.getText()),
-//                    new Double(tfLuasKontrakan.getText()),
-//                    tfStatusKontrakan.getText(),
-//                    tfIdTransaksi.getText()); 
-//        refreshTable();
-//        refreshForm();
+        setValueTransaksi();
+        tDao.ubahData(                
+                transaksi.getTglTransaksi(),
+                transaksi.getNoKontrakan(),
+                transaksi.getIdPengontrak(),
+                transaksi.getIdTransaksi());                
+
+        refreshTable();
+        refreshForm();
     }//GEN-LAST:event_btnUbahActionPerformed
 
     private void tableTransaksiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableTransaksiMouseClicked
-        // TODO add your handling code here:
-        int selectedRowIndex = tableTransaksi.getSelectedRow();
-        model = (DefaultTableModel) tableTransaksi.getModel();
-        
-        tfIdTransaksi.setText((String) model.getValueAt(selectedRowIndex, 0));
-        tfIdTransaksi.setEditable(false);
-        tanggalTransakiChooser.setToolTipText((String) model.getValueAt(selectedRowIndex, 1));
-        comboNoKontrakan.setSelectedItem((String) model.getValueAt(selectedRowIndex, 2));
-        comboIdPengontrak.setSelectedItem((String) model.getValueAt(selectedRowIndex, 3));
+        try {
+            // TODO add your handling code here:
+            int selectedRowIndex = tableTransaksi.getSelectedRow();
+            model = (DefaultTableModel) tableTransaksi.getModel();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date tanggal = new SimpleDateFormat("yyyy-MM-dd").parse(String.valueOf(model.getValueAt(selectedRowIndex, 1)));
+            
+            tfIdTransaksi.setText((String) model.getValueAt(selectedRowIndex, 0));
+            tfIdTransaksi.setEditable(false);
+            tanggalTransakiChooser.setDate(tanggal);
+            comboNoKontrakan.setSelectedItem((String) model.getValueAt(selectedRowIndex, 2));
+            comboIdPengontrak.setSelectedItem((String) model.getValueAt(selectedRowIndex, 3));
+        } catch (ParseException ex) {
+            Logger.getLogger(MenuTransaksiInternalFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }//GEN-LAST:event_tableTransaksiMouseClicked
+
+    private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
+        // TODO add your handling code here:
+        tDao.hapusData(tfIdTransaksi.getText());                       
+    }//GEN-LAST:event_btnHapusActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
