@@ -58,9 +58,7 @@ public class PengontrakDAO {
     
     
     
-    public void tambahData(
-            String idPengontrak, String nik, String namaPengontrak, String noHp
-    ){
+    public void tambahData(String idPengontrak, String nik, String namaPengontrak, String noHp){
         db = new ConnectionDB();
         db.dbConnect();
         try {

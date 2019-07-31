@@ -44,20 +44,6 @@ public class Transaksi {
     }
 
     /**
-     * @return the noKontrakan
-     */
-    public String getNoKontrakan() {
-        return noKontrakan;
-    }
-
-    /**
-     * @param noKontrakan the noKontrakan to set
-     */
-    public void setNoKontrakan(String noKontrakan) {
-        this.noKontrakan = noKontrakan;
-    }
-
-    /**
      * @return the idPengontrak
      */
     public String getIdPengontrak() {
@@ -69,6 +55,20 @@ public class Transaksi {
      */
     public void setIdPengontrak(String idPengontrak) {
         this.idPengontrak = idPengontrak;
+    }
+    
+    /**
+     * @return the noKontrakan
+     */
+    public String getNoKontrakan() {
+        return noKontrakan;
+    }
+
+    /**
+     * @param noKontrakan the noKontrakan to set
+     */
+    public void setNoKontrakan(String noKontrakan) {
+        this.noKontrakan = noKontrakan;
     }
     
 }

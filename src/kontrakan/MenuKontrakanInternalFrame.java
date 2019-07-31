@@ -6,7 +6,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.ConnectionDB;
 import model.Kontrakan;
-import model.TableModel;
+import model.*;
 
 /*
  * To change this license header, choose License Headers in Project Properties.

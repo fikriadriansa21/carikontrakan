@@ -4,9 +4,7 @@
  * and open the template in the editor.
  */
 package model;
-
 import java.sql.*;
-import javax.swing.JOptionPane;
 
 /**
  *

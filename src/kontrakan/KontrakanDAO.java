@@ -5,9 +5,7 @@
  */
 package kontrakan;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import javax.swing.JOptionPane;
 import model.ConnectionDB;
 
@@ -58,9 +56,7 @@ public class KontrakanDAO {
     }
         
     
-    public void tambahData(
-            String noKontrakan, double hargaKontrakan, double luasKontrakan, String status
-    ){
+    public void tambahData(String noKontrakan, double hargaKontrakan, double luasKontrakan, String status){
         db = new ConnectionDB();
         db.dbConnect();
         try {
@@ -114,6 +110,5 @@ public class KontrakanDAO {
         } catch (Exception e) {
         }
     }
-        
-    
+            
 }

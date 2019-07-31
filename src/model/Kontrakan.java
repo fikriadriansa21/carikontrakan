@@ -5,11 +5,6 @@
  */
 package model;
 
-import java.sql.*;
-import javax.swing.JComboBox;
-import javax.swing.JOptionPane;
-import kontrakan.MenuKontrakanInternalFrame;
-
 /**
  *
  * @author Izun

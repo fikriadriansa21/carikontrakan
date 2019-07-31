@@ -5,9 +5,7 @@
  */
 package transaksi;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import javax.swing.JOptionPane;
 import model.ConnectionDB;
 
@@ -36,9 +34,7 @@ public class TransaksiDAO {
                 jumlahBaris = rs.getInt("jumlah");
                         
             }
-            query = "SELECT t.id_transaksi, t.tanggal_transaksi, t.no_kontrakan, t.id_pengontrak "
-                    + " FROM transaksi t "
-                    + " ; ";
+            query = "SELECT t.id_transaksi, t.tanggal_transaksi, t.no_kontrakan, t.id_pengontrak FROM transaksi t; ";
             rs = stmt.executeQuery(query);
             data = new String[jumlahBaris][4];
             int r = 0;

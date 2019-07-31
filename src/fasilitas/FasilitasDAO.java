@@ -55,8 +55,7 @@ public class FasilitasDAO {
         }
         return data;
     }
-    
-    
+
     
     public void tambahData(
             String idFasilitas, String noKontrakan, String namaFasilitas, int jumlah
