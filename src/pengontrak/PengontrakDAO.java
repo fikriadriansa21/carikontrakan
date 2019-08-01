@@ -21,7 +21,7 @@ public class PengontrakDAO {
     private String query;
     private ResultSet rs; 
     
-    public String[][] tampilData(){
+    public String[][] tampilDataPengontrak(){
         rs = null;
         String[][] data = null;
         db = new ConnectionDB();
@@ -58,7 +58,7 @@ public class PengontrakDAO {
     
     
     
-    public void tambahData(String idPengontrak, String nik, String namaPengontrak, String noHp){
+    public void tambahDataPengontrak(String idPengontrak, String nik, String namaPengontrak, String noHp){
         db = new ConnectionDB();
         db.dbConnect();
         try {
@@ -75,7 +75,7 @@ public class PengontrakDAO {
         }
     }
     
-    public void ubahData (String nik, String namaPengontrak, String noHp, String idPengontrak){
+    public void ubahDataPengontrak (String nik, String namaPengontrak, String noHp, String idPengontrak){
         db = new ConnectionDB();
         db.dbConnect();
         try {
@@ -97,7 +97,7 @@ public class PengontrakDAO {
         }
     }
     
-    public void hapusData(String idPengontrak){
+    public void hapusDataPengontrak(String idPengontrak){
         db = new ConnectionDB();
         db.dbConnect();
         try {

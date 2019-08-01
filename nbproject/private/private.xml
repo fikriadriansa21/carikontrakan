@@ -3,12 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/fikriadriansa21/NetBeansProjects/CariKontrakan/src/main/MainForm.java</file>
-            <file>file:/Users/fikriadriansa21/NetBeansProjects/CariKontrakan/src/transaksi/TransaksiDAO.java</file>
-            <file>file:/Users/fikriadriansa21/NetBeansProjects/CariKontrakan/src/pengontrak/PengontrakDAO.java</file>
+            <file>file:/Users/fikriadriansa21/NetBeansProjects/CariKontrakan/src/fasilitas/MenuFasilitasInternalFrame.java</file>
+            <file>file:/Users/fikriadriansa21/NetBeansProjects/CariKontrakan/src/pengontrak/MenuPengontrakInternalFrame.java</file>
             <file>file:/Users/fikriadriansa21/NetBeansProjects/CariKontrakan/src/kontrakan/MenuKontrakanInternalFrame.java</file>
-            <file>file:/Users/fikriadriansa21/NetBeansProjects/CariKontrakan/src/kontrakan/KontrakanDAO.java</file>
-            <file>file:/Users/fikriadriansa21/NetBeansProjects/CariKontrakan/src/fasilitas/FasilitasDAO.java</file>
         </group>
     </open-files>
 </project-private>

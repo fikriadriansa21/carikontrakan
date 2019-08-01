@@ -20,7 +20,7 @@ public class KontrakanDAO {
     private String query;
     private ResultSet rs;    
     
-    public String[][] tampilData(){
+    public String[][] tampilDataKontrakan(){
         rs = null;
         String[][] data = null;
         db = new ConnectionDB();
@@ -56,7 +56,7 @@ public class KontrakanDAO {
     }
         
     
-    public void tambahData(String noKontrakan, double hargaKontrakan, double luasKontrakan, String status){
+    public void tambahDataKontrakan(String noKontrakan, double hargaKontrakan, double luasKontrakan, String status){
         db = new ConnectionDB();
         db.dbConnect();
         try {
@@ -73,7 +73,7 @@ public class KontrakanDAO {
         }
     }
     
-    public void ubahData (double hargaKontrakan, double luasKontrakan, String status, String noKontrakan){
+    public void ubahDataKontrakan (double hargaKontrakan, double luasKontrakan, String status, String noKontrakan){
         db = new ConnectionDB();
         db.dbConnect();
         try {
@@ -95,7 +95,7 @@ public class KontrakanDAO {
         }
     }
     
-    public void hapusData(String noKontrakan){
+    public void hapusDataKontrakan(String noKontrakan){
         db = new ConnectionDB();
         db.dbConnect();
         try {

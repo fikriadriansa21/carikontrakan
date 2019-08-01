@@ -1,11 +1,9 @@
 package kontrakan;
 
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import model.ConnectionDB;
-import model.Kontrakan;
+import static jdk.nashorn.internal.objects.NativeError.printStackTrace;
 import model.*;
 
 /*
@@ -43,7 +41,7 @@ public class MenuKontrakanInternalFrame extends javax.swing.JInternalFrame {
     
     private void refreshTable(){
         Kontrakan kontrakan = new Kontrakan();
-        rs = kDao.tampilData();
+        rs = kDao.tampilDataKontrakan();
         modelTable.setTabel(tableKontrakan, rs, namaKolom, jumlahKolom);
     }    
     
@@ -228,7 +226,7 @@ public class MenuKontrakanInternalFrame extends javax.swing.JInternalFrame {
             }
         });
 
-        btnRefresh.setText("R");
+        btnRefresh.setText("Refresh");
         btnRefresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRefreshActionPerformed(evt);
@@ -290,16 +288,16 @@ public class MenuKontrakanInternalFrame extends javax.swing.JInternalFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 571, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(44, 44, 44))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(31, 31, 31)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1)
-                    .addComponent(btnRefresh))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnRefresh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -360,23 +358,32 @@ public class MenuKontrakanInternalFrame extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnCariActionPerformed
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
-        // TODO add your handling code here:   
-        setValueKontrakan();
-            kDao.tambahData(
-                    kontrakan.getNoKontrakan(),
-                    kontrakan.getHarga(),
-                    kontrakan.getLuasKontrakan(),
-                    kontrakan.getStatus()
-            );
+        // TODO add your handling code here:           
+        try {
+            setValueKontrakan();
+            if((tfNoKontrakan.getText().isEmpty()) || (tfBiayaKontrakan.getText().isEmpty()) ||
+                (tfLuasKontrakan.getText().isEmpty()) || (tfStatusKontrakan.getText().isEmpty())){
+              JOptionPane.showMessageDialog(null, "FIELD TIDAK BOLEH KOSONG!", "WARNING", JOptionPane.ERROR_MESSAGE);
 
-        refreshTable();
-        refreshForm();
+            } else {
+                kDao.tambahDataKontrakan(
+                tfNoKontrakan.getText(),
+                new Double(tfBiayaKontrakan.getText()),
+                new Double(tfLuasKontrakan.getText()),
+                tfStatusKontrakan.getText()
+                );
+            }
+            refreshTable();
+            refreshForm();
+        } catch (Exception e) {
+            printStackTrace(e);
+        }
     }//GEN-LAST:event_btnSimpanActionPerformed
 
     private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed
         // TODO add your handling code here:
         setValueKontrakan();
-            kDao.ubahData(                    
+            kDao.ubahDataKontrakan(                    
                     kontrakan.getHarga(),
                     kontrakan.getLuasKontrakan(),
                     kontrakan.getStatus(),
@@ -395,7 +402,6 @@ public class MenuKontrakanInternalFrame extends javax.swing.JInternalFrame {
         tfBiayaKontrakan.setText((String) model.getValueAt(selectedRowIndex, 1));
         tfLuasKontrakan.setText((String) model.getValueAt(selectedRowIndex, 2));
         tfStatusKontrakan.setText((String) model.getValueAt(selectedRowIndex, 3));
-
     }//GEN-LAST:event_tableKontrakanMouseClicked
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
@@ -407,7 +413,7 @@ public class MenuKontrakanInternalFrame extends javax.swing.JInternalFrame {
 
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
         // TODO add your handling code here:                
-        kDao.hapusData(tfNoKontrakan.getText());        
+        kDao.hapusDataKontrakan(tfNoKontrakan.getText());        
     }//GEN-LAST:event_btnHapusActionPerformed
 
 

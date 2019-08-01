@@ -19,7 +19,7 @@ public class TransaksiDAO {
     private String query;
     private ResultSet rs;
     
-    public String[][] tampilData(){
+    public String[][] tampilDataTransaksi(){
         rs = null;
         String[][] data = null;
         db = new ConnectionDB();
@@ -56,7 +56,7 @@ public class TransaksiDAO {
     
     
     
-    public void tambahData(
+    public void tambahDataTransaksi(
             String idTransaksi, String tanggal, String noKontrakan, String idPengontrak
     ){
         db = new ConnectionDB();
@@ -75,7 +75,7 @@ public class TransaksiDAO {
         }
     }
     
-    public void ubahData (String tanggal, String noKontrakan, String idPengontrak, String idTransaksi){
+    public void ubahDataTransaksi (String tanggal, String noKontrakan, String idPengontrak, String idTransaksi){
         db = new ConnectionDB();
         db.dbConnect();
         try {
@@ -97,7 +97,7 @@ public class TransaksiDAO {
         }
     }
     
-    public void hapusData(String idTransaksi){
+    public void hapusDataTransaksi(String idTransaksi){
         db = new ConnectionDB();
         db.dbConnect();
         try {
@@ -113,7 +113,7 @@ public class TransaksiDAO {
         }
     }
     
-    public String[][] cariTanggal(String tanggalTransaksi){
+    public String[][] cariTanggalTransaksi(String tanggalTransaksi){
         rs = null;
         String[][] data = null;
         db = new ConnectionDB();

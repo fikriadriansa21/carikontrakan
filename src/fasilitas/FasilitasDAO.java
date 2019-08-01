@@ -21,7 +21,7 @@ public class FasilitasDAO {
     private String query;
     private ResultSet rs;    
     
-    public String[][] tampilData(){
+    public String[][] tampilDataFasilitas(){
         rs = null;
         String[][] data = null;
         db = new ConnectionDB();
@@ -57,7 +57,7 @@ public class FasilitasDAO {
     }
 
     
-    public void tambahData(
+    public void tambahDataFasilitas(
             String idFasilitas, String noKontrakan, String namaFasilitas, int jumlah
     ){
         db = new ConnectionDB();
@@ -76,7 +76,7 @@ public class FasilitasDAO {
         }
     }
     
-    public void ubahData (String noKontrakan, String namaFasilitas, int jumlah, String idFasilitas){
+    public void ubahDataFasilitas (String noKontrakan, String namaFasilitas, int jumlah, String idFasilitas){
         db = new ConnectionDB();
         db.dbConnect();
         try {
@@ -98,7 +98,7 @@ public class FasilitasDAO {
         }
     }
     
-    public void hapusData(String idFasilitas){
+    public void hapusDataFasilitas(String idFasilitas){
         db = new ConnectionDB();
         db.dbConnect();
         try {

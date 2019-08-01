@@ -4,9 +4,10 @@
  * and open the template in the editor.
  */
 package fasilitas;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import static jdk.nashorn.internal.objects.NativeError.printStackTrace;
 import model.ConnectionDB;
 import model.Fasilitas;
 import model.TableModel;
@@ -16,6 +17,10 @@ import model.TableModel;
  * @author fikriadriansa21
  */
 public class MenuFasilitasInternalFrame extends javax.swing.JInternalFrame {
+    private ConnectionDB db;
+    private Statement stmt;
+    private String query;
+    private ResultSet resultSet;
     
     String[] namaKolom = {
         "Id Fasilitas",
@@ -29,15 +34,11 @@ public class MenuFasilitasInternalFrame extends javax.swing.JInternalFrame {
     private String[][] rs;
     Fasilitas fasilitas = new Fasilitas();
     DefaultTableModel model;
-    
-    private ConnectionDB db;
-    private Statement stmt;
-    private String query;
-    private ResultSet resultSet;
     private FasilitasDAO fDao = new FasilitasDAO();
     
+    
     private void refreshTable(){        
-        rs = fDao.tampilData();
+        rs = fDao.tampilDataFasilitas();
         modelTable.setTabel(tableFasilitas, rs, namaKolom, jumlahKolom);
     } 
     
@@ -200,7 +201,7 @@ public class MenuFasilitasInternalFrame extends javax.swing.JInternalFrame {
             }
         });
 
-        btnRefresh.setText("R");
+        btnRefresh.setText("Refresh");
         btnRefresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRefreshActionPerformed(evt);
@@ -249,7 +250,7 @@ public class MenuFasilitasInternalFrame extends javax.swing.JInternalFrame {
                         .addGap(18, 18, 18)
                         .addComponent(btnCari))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 590, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnRefresh))
                 .addGap(74, 74, 74))
         );
         layout.setVerticalGroup(
@@ -262,7 +263,7 @@ public class MenuFasilitasInternalFrame extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnRefresh)
+                        .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tfCariFasilitas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -299,23 +300,32 @@ public class MenuFasilitasInternalFrame extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
-        // TODO add your handling code here: 
-        setValueFasilitas();
-        fDao.tambahData(
-            fasilitas.getIdFasilitas(),           
-            fasilitas.getNoKontrakan(),
-            fasilitas.getNamaFasilitas(),
-            fasilitas.getJumlah()
-        );
+        // TODO add your handling code here:        
+        try { 
+            setValueFasilitas();
+            if((tfIdFasilitas.getText().isEmpty()) || (tfNamaFasilitas.getText().isEmpty()) ||
+              (tfJumlah.getText().isEmpty())){
+                JOptionPane.showMessageDialog(null, "FIELD TIDAK BOLEH KOSONG!", "WARNING", JOptionPane.ERROR_MESSAGE);
 
-        refreshTable();
-        refreshForm();
+            } else {
+                fDao.tambahDataFasilitas(
+                tfIdFasilitas.getText(),           
+                String.valueOf(comboNoKontrakan.getSelectedItem()),
+                tfNamaFasilitas.getText(),
+                Integer.valueOf(tfJumlah.getText())
+                );
+            }
+            refreshTable();
+            refreshForm();
+        } catch (Exception e) {
+            printStackTrace(e);
+        }
     }//GEN-LAST:event_btnSimpanActionPerformed
 
     private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed
         // TODO add your handling code here: 
         setValueFasilitas();
-        fDao.ubahData(                       
+        fDao.ubahDataFasilitas(                       
             fasilitas.getNoKontrakan(),
             fasilitas.getNamaFasilitas(),
             fasilitas.getJumlah(),
@@ -345,7 +355,7 @@ public class MenuFasilitasInternalFrame extends javax.swing.JInternalFrame {
 
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
         // TODO add your handling code here:        
-        fDao.hapusData(fasilitas.getIdFasilitas());
+        fDao.hapusDataFasilitas(fasilitas.getIdFasilitas());
     }//GEN-LAST:event_btnHapusActionPerformed
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
