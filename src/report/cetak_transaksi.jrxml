@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="77114d0b-207d-4513-b766-104e3b68ca9a">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT p.nama_pengontrak, k.no_kontrakan, k.harga_kontrakan, t.tanggal_transaksi FROM
+pengontrak p INNER JOIN transaksi t USING(id_pengontrak)
+INNER JOIN kontrakan k USING(no_kontrakan)]]>
+	</queryString>
+	<field name="nama_pengontrak" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="no_kontrakan" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="harga_kontrakan" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tanggal_transaksi" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="219" y="29" width="144" height="20" uuid="9121b669-7c98-4dbb-9eee-ff8477d13d76"/>
+				<textElement>
+					<font fontName="Source Sans Pro Black" size="15"/>
+				</textElement>
+				<text><![CDATA[List Data Transaksi]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="5" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="56" splitType="Stretch">
+			<staticText>
+				<reportElement x="13" y="17" width="84" height="20" uuid="e09acc06-7d80-4f86-9b50-04d1ad9456cd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Source Sans Pro" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nama]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="165" y="17" width="83" height="20" uuid="c1064162-cf78-406b-8185-9011ef13678c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Source Sans Pro" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[No Kontrakan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="295" y="17" width="100" height="20" uuid="51165ff2-0d0d-4441-b8b1-8719a1ac1bd5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Source Sans Pro" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Biaya]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="435" y="17" width="100" height="20" uuid="2bd841a5-1949-4757-9caf-4348b30af08f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Source Sans Pro" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tanggal]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="68" splitType="Stretch">
+			<textField>
+				<reportElement x="13" y="13" width="126" height="30" uuid="c9f2e1d7-e380-46f3-a642-189f9fd5b263"/>
+				<textElement>
+					<font fontName="Source Sans Pro"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nama_pengontrak}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="165" y="13" width="100" height="20" uuid="7556c356-b52e-4f01-b0c1-3f30f47a1e97"/>
+				<textElement>
+					<font fontName="Source Sans Pro"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{no_kontrakan}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="295" y="13" width="16" height="20" uuid="78bde43d-5163-4978-8685-fa4fd3b8b3ca"/>
+				<textElement>
+					<font fontName="Source Sans Pro" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Rp.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="311" y="13" width="100" height="20" uuid="be5a4950-9b01-45df-91be-78786df1525d"/>
+				<textElement>
+					<font fontName="Source Sans Pro"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{harga_kontrakan}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="435" y="13" width="110" height="20" uuid="48f4b80b-0383-4b0e-b28b-b727c891b173"/>
+				<textElement>
+					<font fontName="Source Sans Pro"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tanggal_transaksi}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<staticText>
+				<reportElement x="182" y="12" width="253" height="20" uuid="7d516a69-087d-4531-979b-e4abb7d5f212"/>
+				<textElement>
+					<font fontName="Source Sans Pro Black" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Copyright All Reserved to @CariKontrakan]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
